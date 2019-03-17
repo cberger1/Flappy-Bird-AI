@@ -13,6 +13,7 @@ class NN {
 
   float[] predict() {
     for (int o = 0; o < output.length; o++) {
+      output[o] = 0;
       for (int i = 0; i < input.length; i++) {
         output[o] += input[i] * weights[i][o];
       }
@@ -26,11 +27,29 @@ class NN {
     return output;
   }
 
+  void mutate(float probability, float var) {
+    for (int i = 0; i < weights.length; i++) {
+      for (int o = 0; o < weights[i].length; o++) {
+        if (probability < random(1)) {
+          weights[i][o] += random(-var, var);
+        }
+      }
+    }
+    for (int i = 0; i < bias.length; i++) {
+      if (probability < random(1)) {
+        bias[i] += random(-var, var);
+      }
+    }
+  }
+
   void randomize() {
     for (int i = 0; i < weights.length; i++) {
       for (int o = 0; o < weights[i].length; o++) {
         weights[i][o] = randomGaussian();
+        //weights[i][o] = random(1);
+        print(weights[i][o], " ");
       }
+      println();
     }
     for (int i = 0; i < bias.length; i++) {
       bias[i] = randomGaussian();
